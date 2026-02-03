@@ -31,12 +31,9 @@ export default function ResponseDisplay({ message }: ResponseDisplayProps) {
       <div className="my-4">
         {status === 'answering' && <LoadingIndicator status="answering" />}
         {status === 'critiquing' && originalResponse && (
-          <>
-            <div className="mb-4">
-              <OriginalResponse response={originalResponse} />
-            </div>
-            <LoadingIndicator status="critiquing" />
-          </>
+          <div className="mb-4">
+            <OriginalResponse response={originalResponse} />
+          </div>
         )}
       </div>
     );

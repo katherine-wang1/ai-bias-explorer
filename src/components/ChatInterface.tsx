@@ -1,6 +1,7 @@
 import { useChatStore } from '../store/chatStore';
 import ChatHistory from './ChatHistory';
 import MessageInput from './MessageInput';
+import LoadingIndicator from './LoadingIndicator';
 
 export default function ChatInterface() {
   const { messages, isProcessing, addMessage, clearMessages } = useChatStore();
@@ -8,6 +9,9 @@ export default function ChatInterface() {
   const handleSendMessage = async (message: string) => {
     await addMessage(message);
   };
+
+  // Check if any message is currently in 'critiquing' state
+  const isCritiquing = messages.some(msg => msg.status === 'critiquing');
 
   return (
     <div className="flex flex-col h-screen bg-gray-50">
@@ -31,6 +35,15 @@ export default function ChatInterface() {
           )}
         </div>
       </header>
+
+      {/* Sticky Loading Banner for Second LLM */}
+      {isCritiquing && (
+        <div className="sticky top-0 z-10 bg-indigo-50 border-b border-indigo-200 px-4 py-3 shadow-sm">
+          <div className="max-w-6xl mx-auto">
+            <LoadingIndicator status="critiquing" />
+          </div>
+        </div>
+      )}
 
       {/* Chat History */}
       <ChatHistory messages={messages} />
